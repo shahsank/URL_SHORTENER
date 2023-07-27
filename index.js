@@ -2,8 +2,11 @@ const express = require("express");
 const { v4: uuidv4 } = require("uuid");
 // const { MongoClient } = require('mongodb');
 const mongoose = require("mongoose");
+require('dotenv').config();
+const dbPassword = process.env.DB_PASSWORD;
 
-const url = "mongodb://localhost:27017/URL-Map";
+// const url = "mongodb://localhost:27017/URL-Map";
+const url = `mongodb+srv://ss24392483:${dbPassword}@url-map.e3b5fjr.mongodb.net/?retryWrites=true&w=majority`;
 // const options = { useNewUrlParser: true, useUnifiedTopology: true };
 
 const app = express();

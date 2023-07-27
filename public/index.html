@@ -80,7 +80,7 @@
       function redirectToUrl() {
         const shortenedUrl = shortUrlElement.innerText;
         if (shortenedUrl) {
-          window.location.href = shortenedUrl;
+          window.open(shortenedUrl, '_target');
         }
       }
     </script>
