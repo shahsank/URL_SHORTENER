@@ -51,7 +51,8 @@ app.post("/shorten", async (req, res) => {
   }
 
   const UUID = uuidv4();
-  const shortUrl = `http://localhost:3000/redirect/${UUID}`;
+  const currentUrl = window.location.href;
+  const shortUrl = `http://${currentUrl}:3000/redirect/${UUID}`;
 
   // Store the shortened URL in the database
   try {
