@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>URL Shortener</title>
+    <style>
+      .hide {
+        visibility: hidden;
+      }
+      .show {
+        visibility: visible;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>URL Shortener</h1>
+    <input
+      type="text"
+      id="originalUrl"
+      placeholder="Enter URL"
+      style="width: 300px"
+    />
+    <button onclick="shortenUrl()" style="margin-bottom: 20px">
+      Shorten URL
+    </button>
+    <div style="display: flex; margin: 0">
+      <span class="content">Shortened URL: </span>
+      <p id="shortUrl" onchange="checkUrl()" style="margin: 0 20px"></p>
+      <button class="content" onclick="copyUrl()" style="margin-right: 20px">copy</button>
+      <button class="content" onclick="redirectToUrl()">Redirect</button>
+    </div>
+
+    <script>
+      checkUrl();
+      let isEmpty = true;
+      const shortUrlElement = document.getElementById("shortUrl");
+      async function shortenUrl() {
+        const originalUrl = document.getElementById("originalUrl").value;
+        const response = await fetch("/shorten", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ originalUrl }),
+        });
+
+        const data = await response.json();
+        const shortUrl = data.shortUrl;
+        document.getElementById("shortUrl").innerText = `${shortUrl}`;
+        checkUrl();
+      }
+
+      function copyUrl() {
+        const copyText = document.getElementById("shortUrl").innerText;
+        const tempTextarea = document.createElement("textarea");
+        tempTextarea.value = copyText;
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempTextarea);
+        alert("Text copied to clipboard!");
+      }
+
+      function checkUrl() {
+        console.log("yoooo");
+        const contentElement = document.getElementsByClassName("content");
+        console.log(contentElement);
+        const text = document.getElementById("shortUrl").innerText;
+        console.log(text);
+        if (text.length > 0) {
+          Array.from(contentElement).forEach((element) => {
+            element.classList.remove("hide");
+          });
+        } else {
+          Array.from(contentElement).forEach((element) => {
+            element.classList.add("hide");
+          });
+        }
+      }
+
+      function redirectToUrl() {
+        const shortenedUrl = shortUrlElement.innerText;
+        if (shortenedUrl) {
+          window.location.href = shortenedUrl;
+        }
+      }
+    </script>
+  </body>
+</html>
