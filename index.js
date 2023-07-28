@@ -12,6 +12,7 @@ const url = `mongodb+srv://ss24392483:${dbPassword}@url-map.e3b5fjr.mongodb.net/
 // const options = { useNewUrlParser: true, useUnifiedTopology: true };
 
 const app = express();
+const router = express.Router();
 app.use(express.json());
 app.use(express.static("public"));
 console.log("beeeee");
@@ -38,12 +39,12 @@ const URLMapSchema = new mongoose.Schema({
 
 const URLMapModel = mongoose.model("URL-Map", URLMapSchema);
 
-app.get("/", (req, res) => {
+router.get("/", (req, res) => {
   res.sendFile(__dirname + '/index.html');//sendFile("~/index.html");
 });
 
 // Route to handle URL shortening
-app.post("/shorten", async (req, res) => {
+router.post("/shorten", async (req, res) => {
   console.log('........', req.body)
   const { originalUrl, windowUrl } = req.body;
 
@@ -67,7 +68,7 @@ app.post("/shorten", async (req, res) => {
 });
 
 // Route to handle URL redirection
-app.get("/redirect/:uniqueId", async (req, res) => {
+router.get("/redirect/:uniqueId", async (req, res) => {
   const { uniqueId } = req.params;
   console.log(req.params);
   // Find the original URL from the database using the uniqueId
@@ -90,6 +91,8 @@ app.get("/redirect/:uniqueId", async (req, res) => {
   }
   // res.send('OK')
 });
+
+app.use(`/.netlify/functions/api`, router);
 
 const port = 3000;
 app.listen(port, () => {
