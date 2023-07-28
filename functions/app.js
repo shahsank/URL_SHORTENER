@@ -1,15 +1,12 @@
 const express = require("express");
+const serverless = require('serverless-http')
 const { v4: uuidv4 } = require("uuid");
-const { spawn } = require('child_process');
-// const { MongoClient } = require('mongodb');
 const mongoose = require("mongoose");
 const dotenv = require('dotenv');
 dotenv.config();
 const dbPassword = process.env.DB_PASSWORD;
 console.log(dbPassword)
-// const url = "mongodb://localhost:27017/URL-Map";
 const url = `mongodb+srv://ss24392483:${dbPassword}@url-map.e3b5fjr.mongodb.net/?retryWrites=true&w=majority`;
-// const options = { useNewUrlParser: true, useUnifiedTopology: true };
 
 const app = express();
 const router = express.Router();
@@ -39,13 +36,13 @@ const URLMapSchema = new mongoose.Schema({
 
 const URLMapModel = mongoose.model("URL-Map", URLMapSchema);
 
-app.get("/", (req, res) => {
+router.get("/", (req, res) => {
   console.log(__dirname)
   res.sendFile(__dirname + '/src/index.html');
 });
 
 // Route to handle URL shortening
-app.post("/shorten", async (req, res) => {
+router.post("/shorten", async (req, res) => {
   console.log('........', req.body)
   const { originalUrl, windowUrl } = req.body;
 
@@ -69,7 +66,7 @@ app.post("/shorten", async (req, res) => {
 });
 
 // Route to handle URL redirection
-app.get("/redirect/:uniqueId", async (req, res) => {
+router.get("/redirect/:uniqueId", async (req, res) => {
   const { uniqueId } = req.params;
   console.log(req.params);
   // Find the original URL from the database using the uniqueId
@@ -93,9 +90,10 @@ app.get("/redirect/:uniqueId", async (req, res) => {
   // res.send('OK')
 });
 
-// app.use(`/.netlify/functions/api`, router);
+app.use('/.netlify/functions/', router);
 
 const port = 3000;
+export const handler = serverless(app);
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
