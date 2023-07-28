@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require('path');
 const serverless = require('serverless-http')
 const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
@@ -37,8 +38,9 @@ const URLMapSchema = new mongoose.Schema({
 const URLMapModel = mongoose.model("URL-Map", URLMapSchema);
 
 router.get("/", (req, res) => {
-  console.log(__dirname)
-  res.sendFile(__dirname + '/src/index.html');
+  const filePath = path.join(__dirname, 'src', 'index.html');
+  console.log(filePath)
+  res.sendFile(filePath);
 });
 
 // Route to handle URL shortening
@@ -90,10 +92,11 @@ router.get("/redirect/:uniqueId", async (req, res) => {
   // res.send('OK')
 });
 
-app.use('/functions/', router);
+app.use(router);
 
 const port = 3000;
-export const handler = serverless(app);
+const handler = serverless(app);
+module.exports.handler = handler;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
