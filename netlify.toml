@@ -1,3 +1,13 @@
+[functions]
+  external_node_modules = ["express"]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  force = true
+  from = "/app/*"
+  status = 200
+  to = "/functions/app/:splat"
+
 [build]
   functions = "functions"
 
