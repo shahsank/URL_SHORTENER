@@ -42,7 +42,7 @@
           },
           body: JSON.stringify({ originalUrl }),
         });
-
+        console.log(response);
         const data = await response.json();
         const shortUrl = data.shortUrl;
         document.getElementById("shortUrl").innerText = `${shortUrl}`;
