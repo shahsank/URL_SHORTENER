@@ -42,8 +42,8 @@ app.get("/", (req, res) => {
 
 // Route to handle URL shortening
 app.post("/shorten", async (req, res) => {
+  console.log('........', req.body)
   const { originalUrl } = req.body;
-  console.log('........', originalUrl, req.body)
 
   if (!originalUrl) {
     return res

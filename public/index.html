@@ -33,14 +33,16 @@
       // checkUrl();
       let isEmpty = true;
       const shortUrlElement = document.getElementById("shortUrl");
+
       async function shortenUrl() {
         const originalUrl = document.getElementById("originalUrl").value;
+        console.log('start', originalUrl)
         const response = await fetch("/shorten", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: {originalUrl}//JSON.stringify({ originalUrl }),
+          body: JSON.stringify({ originalUrl }),
         });
         console.log(response);
         const data = await response.json();
