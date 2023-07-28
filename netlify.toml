@@ -7,4 +7,7 @@
   status = 200
   to = "/.netlify/functions/app/:splat"
 [build]
-  functions = "functions
+  functions = "functions"
+
+  [dev]
+  publish = "dist"
