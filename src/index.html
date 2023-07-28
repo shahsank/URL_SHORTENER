@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>URL Shortener</title>
+    <script src="./index.js" defer></script>
+    <style>
+      .hide {
+        visibility: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>URL Shortener</h1>
+    <input
+      type="text"
+      id="originalUrl"
+      placeholder="Enter URL"
+      style="width: 300px"
+    />
+    <button onclick="shortenUrl()" style="margin-bottom: 20px">
+      Shorten URL
+    </button>
+    <div style="display: flex; margin: 0">
+      <span class="content">Shortened URL: </span>
+      <p id="shortUrl" onchange="checkUrl()" style="margin: 0 20px"></p>
+      <button class="content" onclick="copyUrl()" style="margin-right: 20px">
+        copy
+      </button>
+      <button class="content" onclick="redirectToUrl()">Redirect</button>
+    </div>
+  </body>
+</html>
