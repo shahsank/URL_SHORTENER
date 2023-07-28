@@ -90,7 +90,7 @@ router.get("/redirect/:uniqueId", async (req, res) => {
   // res.send('OK')
 });
 
-app.use('/.netlify/functions/', router);
+app.use('/functions/', router);
 
 const port = 3000;
 export const handler = serverless(app);
