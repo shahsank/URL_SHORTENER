@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>URL Shortener</title>
-    <script src="../index.js" defer></script>
     <style>
       .hide {
         visibility: hidden;
@@ -26,22 +25,27 @@
     <div style="display: flex; margin: 0">
       <span class="content">Shortened URL: </span>
       <p id="shortUrl" onchange="checkUrl()" style="margin: 0 20px"></p>
-      <button class="content" onclick="copyUrl()" style="margin-right: 20px">copy</button>
+      <button class="content" onclick="copyUrl()" style="margin-right: 20px">
+        copy
+      </button>
       <button class="content" onclick="redirectToUrl()">Redirect</button>
     </div>
 
     <script>
-      // checkUrl();
+      checkUrl();
       let isEmpty = true;
       const shortUrlElement = document.getElementById("shortUrl");
-
+      const windowUrl = window.location.href;
+      console.log(windowUrl);
       async function shortenUrl() {
         const originalUrl = document.getElementById("originalUrl").value;
-        console.log('start', originalUrl)
+        console.log("start", originalUrl);
         const response = await fetch("/shorten", {
           method: "POST",
-          "Content-Type": "application/json",
-          body: JSON.stringify({ originalUrl }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ originalUrl, windowUrl }),
         });
         console.log(response);
         const data = await response.json();
@@ -81,7 +85,7 @@
       function redirectToUrl() {
         const shortenedUrl = shortUrlElement.innerText;
         if (shortenedUrl) {
-          window.open(shortenedUrl, '_target');
+          window.open(shortenedUrl, "_target");
         }
       }
     </script>

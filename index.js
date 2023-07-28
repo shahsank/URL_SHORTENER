@@ -39,22 +39,13 @@ const URLMapSchema = new mongoose.Schema({
 const URLMapModel = mongoose.model("URL-Map", URLMapSchema);
 
 app.get("/", (req, res) => {
-  const childProcess = spawn('pwd');
-
-  // Collect the output of the command
-  let output = '';
-
-  // Log the output from the child process to the console
-  childProcess.stdout.on('data', (data) => {
-    output += data;
-  });
-  res.sendFile(output + "/index.html")//sendFile("~/index.html");
+  res.sendFile(__dirname + '/index.html');//sendFile("~/index.html");
 });
 
 // Route to handle URL shortening
 app.post("/shorten", async (req, res) => {
   console.log('........', req.body)
-  const { originalUrl } = req.body;
+  const { originalUrl, windowUrl } = req.body;
 
   if (!originalUrl) {
     return res
@@ -63,9 +54,8 @@ app.post("/shorten", async (req, res) => {
   }
 
   const UUID = uuidv4();
-  const currentUrl = window.location.href;
-  console.log(currentUrl);
-  const shortUrl = `http://${currentUrl}:3000/redirect/${UUID}`;
+  console.log(windowUrl);
+  const shortUrl = `${windowUrl}redirect/${UUID}`;
 
   // Store the shortened URL in the database
   try {
