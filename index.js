@@ -1,10 +1,12 @@
 const express = require("express");
 const { v4: uuidv4 } = require("uuid");
+const { spawn } = require('child_process');
 // const { MongoClient } = require('mongodb');
 const mongoose = require("mongoose");
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
 const dbPassword = process.env.DB_PASSWORD;
-
+console.log(dbPassword)
 // const url = "mongodb://localhost:27017/URL-Map";
 const url = `mongodb+srv://ss24392483:${dbPassword}@url-map.e3b5fjr.mongodb.net/?retryWrites=true&w=majority`;
 // const options = { useNewUrlParser: true, useUnifiedTopology: true };
@@ -37,7 +39,16 @@ const URLMapSchema = new mongoose.Schema({
 const URLMapModel = mongoose.model("URL-Map", URLMapSchema);
 
 app.get("/", (req, res) => {
-  res.send("Welcome to URL Shortener");
+  const childProcess = spawn('pwd');
+
+  // Collect the output of the command
+  let output = '';
+
+  // Log the output from the child process to the console
+  childProcess.stdout.on('data', (data) => {
+    output += data;
+  });
+  res.sendFile(output + "/index.html")//sendFile("~/index.html");
 });
 
 // Route to handle URL shortening
@@ -53,6 +64,7 @@ app.post("/shorten", async (req, res) => {
 
   const UUID = uuidv4();
   const currentUrl = window.location.href;
+  console.log(currentUrl);
   const shortUrl = `http://${currentUrl}:3000/redirect/${UUID}`;
 
   // Store the shortened URL in the database

@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>URL Shortener</title>
+    <script src="../index.js" defer></script>
     <style>
       .hide {
         visibility: hidden;
@@ -39,9 +40,7 @@
         console.log('start', originalUrl)
         const response = await fetch("/shorten", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          "Content-Type": "application/json",
           body: JSON.stringify({ originalUrl }),
         });
         console.log(response);
