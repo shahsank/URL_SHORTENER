@@ -1,8 +1,9 @@
+const app = require('./app');
+const serverless = require('serverless-http');
 checkUrl();
 let isEmpty = true;
 const shortUrlElement = document.getElementById("shortUrl");
 const windowUrl = window.location.href;
-console.log(windowUrl);
 
 
 async function shortenUrl() {
@@ -60,3 +61,5 @@ function redirectToUrl() {
     window.open(shortenedUrl, "_target");
   }
 }
+
+module.exports.handler = serverless(app);

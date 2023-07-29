@@ -1,6 +1,5 @@
 const express = require("express");
 const path = require('path');
-const serverless = require('serverless-http')
 const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
 const dotenv = require('dotenv');
@@ -12,7 +11,7 @@ const url = `mongodb+srv://ss24392483:${dbPassword}@url-map.e3b5fjr.mongodb.net/
 const app = express();
 const router = express.Router();
 app.use(express.json());
-app.use(express.static("src"));
+app.use(express.static("dist"));
 console.log("beeeee");
 
 mongoose
@@ -38,7 +37,7 @@ const URLMapSchema = new mongoose.Schema({
 const URLMapModel = mongoose.model("URL-Map", URLMapSchema);
 
 router.get("/", (req, res) => {
-  const filePath = path.join(__dirname, 'src', 'index.html');
+  const filePath = path.join(__dirname, 'dist', 'index.html');
   console.log(filePath)
   res.sendFile(filePath);
 });
@@ -92,11 +91,12 @@ router.get("/redirect/:uniqueId", async (req, res) => {
   // res.send('OK')
 });
 
-app.use(router);
-
+app.use('/', router);
+const serverless = require('serverless-http')
 const port = 3000;
 const handler = serverless(app);
 module.exports.handler = handler;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+module.exports = app;
